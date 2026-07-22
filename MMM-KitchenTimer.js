@@ -15,7 +15,8 @@ Module.register("MMM-KitchenTimer", {
     soundFile: "alarm.wav",
     buttonSoundFile: "beep.wav",
     buttonSoundVolume: 0.2,
-    updateInterval: 250
+    updateInterval: 250,
+    broadcastTicks: true
   },
 
   getScripts() {
@@ -30,6 +31,8 @@ Module.register("MMM-KitchenTimer", {
     Log.info(`Starting module: ${this.name}`);
     this.timer = new KitchenTimerState({ now: () => Date.now() });
     this.lastStatus = this.timer.snapshot().status;
+    this.durationSeconds = 0;
+    this.lastBroadcastSecond = null;
     this.alarm = this.createAudio(this.config.soundFile, true, 1);
     this.buttonSound = this.createAudio(
       this.config.buttonSoundFile,
@@ -77,13 +80,19 @@ Module.register("MMM-KitchenTimer", {
       this.handleStatusChange(this.lastStatus, state);
       this.lastStatus = state.status;
     }
-    if (state.status === "running") this.updateDom(0);
+    if (state.status === "running") {
+      if (this.config.broadcastTicks && state.remainingSeconds !== this.lastBroadcastSecond) {
+        this.lastBroadcastSecond = state.remainingSeconds;
+        this.sendNotification("KITCHEN_TIMER_TICK", this.statePayload(state));
+      }
+      this.updateDom(0);
+    }
   },
 
   handleStatusChange(previous, state) {
     if (state.status === "finished") {
       if (this.config.sound) this.play(this.alarm);
-      this.sendNotification("KITCHEN_TIMER_FINISHED", state);
+      this.sendNotification("KITCHEN_TIMER_FINISHED", this.statePayload(state));
     } else if (previous === "finished") {
       this.silenceAlarm();
     }
@@ -97,10 +106,15 @@ Module.register("MMM-KitchenTimer", {
     switch (action) {
       case "start":
         this.timer.start(this.readSeconds(payload));
+        this.durationSeconds = this.timer.snapshot().remainingSeconds;
         event = "KITCHEN_TIMER_STARTED";
         break;
       case "add":
         this.timer.add(this.readSeconds(payload));
+        this.durationSeconds = Math.max(
+          this.durationSeconds,
+          this.timer.snapshot().remainingSeconds
+        );
         event = "KITCHEN_TIMER_UPDATED";
         break;
       case "pause":
@@ -120,6 +134,8 @@ Module.register("MMM-KitchenTimer", {
       case "reset":
       case "dismiss":
         this.timer.reset();
+        this.durationSeconds = 0;
+        this.lastBroadcastSecond = null;
         event = action === "dismiss"
           ? "KITCHEN_TIMER_DISMISSED"
           : "KITCHEN_TIMER_RESET";
@@ -132,7 +148,7 @@ Module.register("MMM-KitchenTimer", {
     const state = this.timer.snapshot();
     if (previous === "finished" || state.status !== "finished") this.silenceAlarm();
     this.lastStatus = state.status;
-    this.sendNotification(event, state);
+    this.sendNotification(event, this.statePayload(state));
     this.updateDom(0);
   },
 
@@ -142,6 +158,16 @@ Module.register("MMM-KitchenTimer", {
       : payload;
     const seconds = Number(value);
     return Number.isFinite(seconds) && seconds > 0 ? seconds : 0;
+  },
+
+  statePayload(state = this.timer.snapshot()) {
+    return {
+      ...state,
+      durationSeconds: this.durationSeconds,
+      elapsedRatio: this.durationSeconds > 0
+        ? Math.min(1, Math.max(0, 1 - state.remainingSeconds / this.durationSeconds))
+        : 0
+    };
   },
 
   notificationReceived(notification, payload) {
@@ -203,6 +229,25 @@ Module.register("MMM-KitchenTimer", {
     }
     wrapper.appendChild(presets);
 
+    const actions = document.createElement("div");
+    actions.className = "kitchen-timer__actions";
+
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "kitchen-timer__toggle";
+    toggle.textContent = state.status === "running"
+      ? "Pause"
+      : state.status === "paused"
+        ? "Resume"
+        : state.status === "finished"
+          ? "Dismiss"
+          : "Start";
+    toggle.disabled = state.status === "idle";
+    toggle.addEventListener("click", () => this.perform(
+      state.status === "finished" ? "dismiss" : "toggle"
+    ));
+    actions.appendChild(toggle);
+
     if (this.config.showReset) {
       const reset = document.createElement("button");
       reset.type = "button";
@@ -212,8 +257,10 @@ Module.register("MMM-KitchenTimer", {
       reset.addEventListener("click", () => this.perform(
         state.status === "finished" ? "dismiss" : "reset"
       ));
-      wrapper.appendChild(reset);
+      actions.appendChild(reset);
     }
+
+    wrapper.appendChild(actions);
 
     return wrapper;
   },

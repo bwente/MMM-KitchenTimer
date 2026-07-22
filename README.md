@@ -42,6 +42,7 @@ Existing `timertext` and `timersecs` configurations remain compatible.
 | `playButtonSound` | `true` | Play feedback for controls. |
 | `buttonSoundFile` | `"beep.wav"` | Button feedback file. |
 | `buttonSoundVolume` | `0.2` | Button feedback volume from 0 to 1. |
+| `broadcastTicks` | `true` | Broadcast a semantic progress update once per changed second. |
 
 ## Controls
 
@@ -75,10 +76,11 @@ The module broadcasts state snapshots containing `status`, `remainingSeconds`, a
 - `KITCHEN_TIMER_PAUSED`
 - `KITCHEN_TIMER_RESUMED`
 - `KITCHEN_TIMER_FINISHED`
+- `KITCHEN_TIMER_TICK`
 - `KITCHEN_TIMER_RESET`
 - `KITCHEN_TIMER_DISMISSED`
 
-These semantic events allow sound, lights, GPIO controls, voice assistants, and notification centers to integrate without adding hardware-specific code to this module.
+These semantic events allow sound, lights, GPIO controls, voice assistants, and notification centers to integrate without adding hardware-specific code to this module. Payloads include `durationSeconds` and `elapsedRatio`; tick events are emitted at most once per changed second.
 
 ## Development
 
