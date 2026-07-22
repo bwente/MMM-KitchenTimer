@@ -19,7 +19,7 @@ Module.register("MMM-KitchenTimer", {
   },
 
   getScripts() {
-    return ["lib/timer-state.js"];
+    return [this.file("lib/timer-state.js")];
   },
 
   getStyles() {
