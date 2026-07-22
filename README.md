@@ -47,8 +47,8 @@ Existing `timertext` and `timersecs` configurations remain compatible.
 ## Controls
 
 - Press a preset to add its duration and start the timer.
-- Press the time to pause or resume.
-- Press Reset to cancel an active timer.
+- Press the large time display to pause or resume.
+- Press Reset in the preset row to cancel an active timer.
 - Press Dismiss after the alarm sounds.
 
 All controls are ordinary accessible HTML buttons and work with touch, mouse, and keyboard activation.

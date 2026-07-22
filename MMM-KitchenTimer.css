@@ -62,7 +62,6 @@
 }
 
 .kitchen-timer__preset,
-.kitchen-timer__toggle,
 .kitchen-timer__reset {
   min-width: 112px;
   min-height: 72px;
@@ -71,27 +70,18 @@
   font-size: clamp(24px, 3.5vw, 36px) !important;
 }
 
-.kitchen-timer__actions {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-}
-
 .kitchen-timer__preset:active,
-.kitchen-timer__toggle:active,
 .kitchen-timer__reset:active {
   transform: scale(0.97);
   background: rgba(255, 255, 255, 0.16);
 }
 
-.kitchen-timer__toggle,
 .kitchen-timer__reset {
-  min-height: 56px;
+  min-height: 72px;
   color: #aaa !important;
-  font-size: clamp(18px, 2.5vw, 26px) !important;
+  font-size: clamp(20px, 2.8vw, 30px) !important;
 }
 
-.kitchen-timer__toggle:disabled,
 .kitchen-timer__reset:disabled {
   visibility: hidden;
 }
@@ -129,7 +119,6 @@
 }
 
 .kitchen-timer--compact .kitchen-timer__preset,
-.kitchen-timer--compact .kitchen-timer__toggle,
 .kitchen-timer--compact .kitchen-timer__reset {
   min-width: 60px;
   min-height: 40px;

@@ -227,27 +227,6 @@ Module.register("MMM-KitchenTimer", {
       button.addEventListener("click", () => this.perform("add", this.config.timersecs[index]));
       presets.appendChild(button);
     }
-    wrapper.appendChild(presets);
-
-    const actions = document.createElement("div");
-    actions.className = "kitchen-timer__actions";
-
-    const toggle = document.createElement("button");
-    toggle.type = "button";
-    toggle.className = "kitchen-timer__toggle";
-    toggle.textContent = state.status === "running"
-      ? "Pause"
-      : state.status === "paused"
-        ? "Resume"
-        : state.status === "finished"
-          ? "Dismiss"
-          : "Start";
-    toggle.disabled = state.status === "idle";
-    toggle.addEventListener("click", () => this.perform(
-      state.status === "finished" ? "dismiss" : "toggle"
-    ));
-    actions.appendChild(toggle);
-
     if (this.config.showReset) {
       const reset = document.createElement("button");
       reset.type = "button";
@@ -257,10 +236,9 @@ Module.register("MMM-KitchenTimer", {
       reset.addEventListener("click", () => this.perform(
         state.status === "finished" ? "dismiss" : "reset"
       ));
-      actions.appendChild(reset);
+      presets.appendChild(reset);
     }
-
-    wrapper.appendChild(actions);
+    wrapper.appendChild(presets);
 
     return wrapper;
   },
