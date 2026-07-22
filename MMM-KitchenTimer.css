@@ -83,7 +83,13 @@
 }
 
 .kitchen-timer__reset:disabled {
-  visibility: hidden;
+  cursor: default;
+  opacity: 0.42;
+}
+
+.kitchen-timer__reset:disabled:active {
+  transform: none;
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .kitchen-timer--paused .kitchen-timer__display {

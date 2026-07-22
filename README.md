@@ -4,6 +4,8 @@ A responsive, touch-friendly countdown timer for [MagicMirror²](https://magicmi
 
 Originally created by [Tom Short](https://github.com/tshort). This maintained edition preserves the original configuration while adding reliable wall-clock timing, accessible controls, compact and full-screen layouts, and a notification API.
 
+![MMM-KitchenTimer running on a 1024×600 MagicMirror display](screenshot.png)
+
 ## Installation
 
 ```sh
