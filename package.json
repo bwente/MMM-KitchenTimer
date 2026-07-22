@@ -1,0 +1,12 @@
+{
+  "name": "mmm-kitchentimer",
+  "version": "1.0.0",
+  "description": "A touch-friendly countdown timer for MagicMirror²",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
