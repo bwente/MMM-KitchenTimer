@@ -45,6 +45,7 @@ Existing `timertext` and `timersecs` configurations remain compatible.
 | `buttonSoundFile` | `"beep.wav"` | Button feedback file. |
 | `buttonSoundVolume` | `0.2` | Button feedback volume from 0 to 1. |
 | `broadcastTicks` | `true` | Broadcast a semantic progress update once per changed second. |
+| `runWhileHidden` | `true` | Keep countdowns and completion events running while another MagicMirror page is visible. |
 
 ## Controls
 

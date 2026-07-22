@@ -36,3 +36,16 @@ test("loads its timer engine from the module-local URL", () => {
     "/modules/MMM-KitchenTimer/lib/timer-state.js"
   ]);
 });
+
+test("continues ticking when MagicMirror hides the module by default", () => {
+  const definition = loadDefinition();
+  const interval = {};
+  const module = {
+    config: { runWhileHidden: true },
+    tick: interval
+  };
+
+  definition.suspend.call(module);
+
+  assert.equal(module.tick, interval);
+});

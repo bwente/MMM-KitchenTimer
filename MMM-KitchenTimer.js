@@ -16,7 +16,8 @@ Module.register("MMM-KitchenTimer", {
     buttonSoundFile: "beep.wav",
     buttonSoundVolume: 0.2,
     updateInterval: 250,
-    broadcastTicks: true
+    broadcastTicks: true,
+    runWhileHidden: true
   },
 
   getScripts() {
@@ -43,6 +44,7 @@ Module.register("MMM-KitchenTimer", {
   },
 
   suspend() {
+    if (this.config.runWhileHidden) return;
     if (this.tick) clearInterval(this.tick);
     this.tick = null;
   },
@@ -51,6 +53,7 @@ Module.register("MMM-KitchenTimer", {
     if (!this.tick) {
       this.tick = setInterval(() => this.onTick(), this.config.updateInterval);
     }
+    this.onTick();
   },
 
   createAudio(filename, loop, volume) {
@@ -193,10 +196,12 @@ Module.register("MMM-KitchenTimer", {
     wrapper.className = `kitchen-timer kitchen-timer--${state.status}` +
       (this.config.compact ? " kitchen-timer--compact" : "");
 
-    const heading = document.createElement("h2");
-    heading.className = "kitchen-timer__title";
-    heading.textContent = this.config.title;
-    wrapper.appendChild(heading);
+    if (this.config.title) {
+      const heading = document.createElement("h2");
+      heading.className = "kitchen-timer__title";
+      heading.textContent = this.config.title;
+      wrapper.appendChild(heading);
+    }
 
     const display = document.createElement("button");
     display.className = "kitchen-timer__display";
