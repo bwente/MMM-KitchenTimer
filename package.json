@@ -3,6 +3,23 @@
   "version": "1.0.1",
   "description": "A touch-friendly countdown timer for MagicMirror²",
   "license": "MIT",
+  "keywords": [
+    "magicmirror",
+    "magicmirror2",
+    "magic-mirror-module",
+    "countdown-timer",
+    "kitchen-timer",
+    "touchscreen",
+    "raspberry-pi"
+  ],
+  "homepage": "https://github.com/bwente/MMM-KitchenTimer#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bwente/MMM-KitchenTimer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bwente/MMM-KitchenTimer/issues"
+  },
   "scripts": {
     "test": "node --test"
   },
