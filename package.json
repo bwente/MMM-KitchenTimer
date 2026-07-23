@@ -21,7 +21,11 @@
     "url": "https://github.com/bwente/MMM-KitchenTimer/issues"
   },
   "scripts": {
+    "lint": "eslint .",
     "test": "node --test"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.4"
   },
   "engines": {
     "node": ">=18"

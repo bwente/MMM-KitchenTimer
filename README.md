@@ -15,6 +15,15 @@ git clone https://github.com/bwente/MMM-KitchenTimer.git
 
 No production dependencies are required.
 
+## Update
+
+```sh
+cd ~/MagicMirror/modules/MMM-KitchenTimer
+git pull
+```
+
+Restart MagicMirror² after updating the module.
+
 ## Configuration
 
 ```js
@@ -25,8 +34,8 @@ No production dependencies are required.
     timertext: ["1m", "5m", "10m", "25m"],
     timersecs: [60, 300, 600, 1500],
     title: "Timer",
-    sound: true
-  }
+    sound: true,
+  },
 }
 ```
 
@@ -88,7 +97,9 @@ These semantic events allow sound, lights, GPIO controls, voice assistants, and 
 ## Development
 
 ```sh
+npm install
+npm run lint
 npm test
 ```
 
-Tests use Node's built-in test runner and install no dependencies.
+Tests use Node's built-in test runner. ESLint is the only development dependency.
